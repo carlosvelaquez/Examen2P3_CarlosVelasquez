@@ -9,6 +9,7 @@ Ciudadano::Ciudadano(){
   likes = "Placeholder";
   dislikes = "Placeholder";
   tipoSangre = "Placeholder";
+  tipo = "";
 }
 
 Ciudadano::Ciudadano(string nNombre, string nFecha, float nAltura, string nColorPelo, string nColorOjos, string nLikes, string nDislikes, string nTipoSangre){
@@ -54,6 +55,10 @@ string Ciudadano::getTipoSangre(){
   return tipoSangre;
 }
 
+string Ciudadano::getTipo(){
+  return tipo;
+}
+
 void Ciudadano::setNombre(string nNombre){
   nombre = nNombre;
 }
@@ -84,4 +89,8 @@ void Ciudadano::setDislikes(string nDislikes){
 
 void Ciudadano::setTipoSangre(string nTipoSangre){
   tipoSangre = nTipoSangre;
+}
+
+void Ciudadano::setTipo(string nTipo){
+  tipo = nTipo;
 }

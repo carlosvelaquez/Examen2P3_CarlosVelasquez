@@ -15,6 +15,7 @@ Maestro::Maestro(){
   sueldo = 0;
 
   estudiantes = NULL;
+  tipo = "Maestro";
 }
 
 Maestro::Maestro(string nNombre, string nFecha, float nAltura, string nColorPelo, string nColorOjos, string nLikes, string nDislikes, string nTipoSangre, string nHomeroom, string nDepartamento, string nAlias, float nSueldo){
@@ -30,8 +31,9 @@ Maestro::Maestro(string nNombre, string nFecha, float nAltura, string nColorPelo
   departamento = nDepartamento;
   alias = nAlias;
   sueldo = nSueldo;
-  
+
   estudiantes = NULL;
+  tipo = "Maestro";
 }
 
 Lista* Maestro::getEstudiantes(){

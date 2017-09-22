@@ -14,6 +14,7 @@ protected:
   string likes;
   string dislikes;
   string tipoSangre;
+  string tipo;
 
   Quirk quirk;
 
@@ -29,6 +30,7 @@ public:
   string getLikes();
   string getDislikes();
   string getTipoSangre();
+  string getTipo();
 
   void setNombre(string);
   void setFechaNacimiento(string);
@@ -38,4 +40,5 @@ public:
   void setLikes(string);
   void setDislikes(string);
   void setTipoSangre(string);
+  void setTipo(string);
 };

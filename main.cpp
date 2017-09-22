@@ -12,12 +12,12 @@
 using namespace std;
 
 int menu();
-void imprimirCiudadanos(int);
-void imprimirPromedios(int);
-bool guardarArchivo(Lista);
+void imprimirCiudadanos(int, Lista*);
+void imprimirPromedios(int, Lista*);
+bool guardarArchivo(Lista*);
 Ciudadano* anadirCiudadano(int);
-void eliminarCiudadano(int, string);
-bool existe(int, string);
+void eliminarCiudadano(int, string, Lista*);
+bool existe(int, string, Lista*);
 
 int main(){
   Lista ciudadanos;
@@ -38,17 +38,17 @@ int main(){
       }
       case 2:{
         string nombreMaestro;
-        imprimirCiudadanos(1);
+        imprimirCiudadanos(1, &ciudadanos);
 
         cout << endl << "Ingrese el nombre del maestro que desea eliminar - ";
         cin >> nombreMaestro;
 
-        if (existe(1, nombreMaestro)) {
+        if (existe(1, nombreMaestro, &ciudadanos)) {
           string conf;
           cout << "Está seguro de que desea despedir a " << nombreMaestro << "? [Y/N] - ";
 
           if (conf == "Y" || conf == "y") {
-            eliminarCiudadano(1, nombreMaestro);
+            eliminarCiudadano(1, nombreMaestro, &ciudadanos);
             cout << "Maestro despedido exitosamente." << endl;
           }else{
             cout << "Operación abortada." << endl;
@@ -69,17 +69,17 @@ int main(){
       }
       case 4:{
         string nombreEstudiante;
-        imprimirCiudadanos(2);
+        imprimirCiudadanos(2, &ciudadanos);
 
         cout << endl << "Ingrese el nombre del estudiante que desea eliminar - ";
         cin >> nombreEstudiante;
 
-        if (existe(2, nombreEstudiante)) {
+        if (existe(2, nombreEstudiante, &ciudadanos)) {
           string conf;
           cout << "Está seguro de que desea expulsar a " << nombreEstudiante << "? [Y/N] - ";
 
           if (conf == "Y" || conf == "y") {
-            eliminarCiudadano(1, nombreEstudiante);
+            eliminarCiudadano(1, nombreEstudiante, &ciudadanos);
             cout << "Estudiante expulsado exitosamente." << endl;
           }else{
             cout << "Operación abortada." << endl;
@@ -88,27 +88,27 @@ int main(){
         break;
       }
       case 5:{
-        imprimirCiudadanos(1);
+        imprimirCiudadanos(1, &ciudadanos);
         break;
       }
       case 6:{
-        imprimirCiudadanos(2);
+        imprimirCiudadanos(2, &ciudadanos);
         break;
       }
       case 7:{
-        imprimirPromedios(1);
+        imprimirPromedios(1, &ciudadanos);
         break;
       }
       case 8:{
-        imprimirPromedios(2);
+        imprimirPromedios(2, &ciudadanos);
         break;
       }
       case 9:{
-        imprimirCiudadanos(3);
+        imprimirCiudadanos(3, &ciudadanos);
         break;
       }
       case 10:{
-        if (guardarArchivo(ciudadanos)) {
+        if (guardarArchivo(&ciudadanos)) {
           cout << "Registros guardados exitosamente." << endl;
         }else{
           cout << "Ocurrió un error al guardar los Registros" << endl;
@@ -118,7 +118,7 @@ int main(){
       case 11:{
         salir = true;
 
-        cout << "Saliendo del sistema...";
+        cout << "Saliendo del sistema..." << endl;
         cout << "----------------------------------" << endl;
         break;
       }
@@ -154,4 +154,69 @@ int menu(){
   cout << "----------------------------------" << endl;
 
   return op;
+}
+
+void imprimirCiudadanos(int tipo, Lista* ciudadanos){
+  switch (tipo) {
+    case 1:{
+      cout << "Lista de Maestros" << endl;
+      cout << "Nombre | FechaNacimiento | Altura | ColorPelo | ColorOjos " << endl << endl;
+      bool existen = false;
+
+      for (int i = 0; i < ciudadanos->size(); i++) {
+        if (ciudadanos->at(i)->getTipo() == "Maestro") {
+          cout << ciudadanos->at(i)->getNombre() << " | " << ciudadanos->at(i)->getFechaNacimiento() << " | " << ciudadanos->at(i)->getAltura() << " | " << ciudadanos->at(i)->getColorPelo() << " | " << ciudadanos->at(i)->getColorOjos() << endl;
+        }
+      }
+
+      if (!existen) {
+        cout << "No hay registros que mostrar." << endl;
+      }
+      break;
+    }
+    case 2:{
+      cout << "Lista de Estudiantes" << endl;
+      cout << "Nombre | FechaNacimiento | Altura | ColorPelo | ColorOjos " << endl << endl;
+      bool existen = false;
+
+      for (int i = 0; i < ciudadanos->size(); i++) {
+        if (ciudadanos->at(i)->getTipo() == "Estudiante") {
+          cout << ciudadanos->at(i)->getNombre() << " | " << ciudadanos->at(i)->getFechaNacimiento() << " | " << ciudadanos->at(i)->getAltura() << " | " << ciudadanos->at(i)->getColorPelo() << " | " << ciudadanos->at(i)->getColorOjos() << endl;
+        }
+      }
+
+      if (!existen) {
+        cout << "No hay registros que mostrar." << endl;
+      }
+      break;
+    }
+    case 3:{
+
+      break;
+    }
+    default:{
+      cout << "[ERROR] Tipo inválido especificado." << endl;
+      break;
+    }
+  }
+}
+
+void imprimirPromedios(int tipo, Lista* ciudadanos){
+
+}
+
+bool guardarArchivo(Lista*){
+
+}
+
+Ciudadano* anadirCiudadano(int tipo){
+
+}
+
+void eliminarCiudadano(int, string, Lista* ciudadanos){
+
+}
+
+bool existe(int, string, Lista* ciudadanos){
+
 }

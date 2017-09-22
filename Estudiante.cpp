@@ -12,6 +12,7 @@ Estudiante::Estudiante(){
   promedio = 0;
   homeroom = "Placeholder";
   maestroGuia = NULL;
+  tipo = "Estudiante";
 }
 
 Estudiante::Estudiante(string nNombre, string nFecha, float nAltura, string nColorPelo, string nColorOjos, string nLikes, string nDislikes, string nTipoSangre, float nPromedio, string nHomeroom, Maestro* nMaestroGuia){
@@ -26,6 +27,7 @@ Estudiante::Estudiante(string nNombre, string nFecha, float nAltura, string nCol
   promedio = nPromedio;
   homeroom = nHomeroom;
   maestroGuia = nMaestroGuia;
+  tipo = "Estudiante";
 }
 
 float Estudiante::getPromedio(){
