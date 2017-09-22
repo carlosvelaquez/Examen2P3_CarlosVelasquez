@@ -1,5 +1,7 @@
 #pragma once
 #include "Ciudadano.h"
+#include "Maestro.h"
+#include "Lista.h"
 
 class Estudiante : public Ciudadano{
 private:

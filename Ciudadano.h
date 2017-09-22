@@ -1,5 +1,8 @@
 #pragma once
 #include <string>
+#include "Quirk.h"
+
+using namespace std;
 
 class Ciudadano{
 protected:

@@ -1,5 +1,9 @@
 #include "Emmitter.h"
 
+Emmitter::Emmitter(){
+  tipo = "Emmitter";
+}
+
 string Emmitter::getEfecto(){
   return efecto;
 }
@@ -8,7 +12,7 @@ int Emmitter::getObjetosAfectados(){
   return objetosAfectados;
 }
 
-bool Emmitter::necesitaContacto(){
+bool Emmitter::getNecesitaContacto(){
   return necesitaContacto;
 }
 
