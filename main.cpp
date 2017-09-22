@@ -163,7 +163,7 @@ void imprimirCiudadanos(int tipo, Lista* ciudadanos){
       cout << "Nombre | FechaNacimiento | Altura | ColorPelo | ColorOjos " << endl << endl;
       bool existen = false;
 
-      for (int i = 0; i < ciudadanos->size(); i++) {
+      for (int i = 1; i < ciudadanos->size(); i++) {
         if (ciudadanos->at(i)->getTipo() == "Maestro") {
           cout << ciudadanos->at(i)->getNombre() << " | " << ciudadanos->at(i)->getFechaNacimiento() << " | " << ciudadanos->at(i)->getAltura() << " | " << ciudadanos->at(i)->getColorPelo() << " | " << ciudadanos->at(i)->getColorOjos() << endl;
         }
@@ -179,7 +179,7 @@ void imprimirCiudadanos(int tipo, Lista* ciudadanos){
       cout << "Nombre | FechaNacimiento | Altura | ColorPelo | ColorOjos " << endl << endl;
       bool existen = false;
 
-      for (int i = 0; i < ciudadanos->size(); i++) {
+      for (int i = 1; i < ciudadanos->size(); i++) {
         if (ciudadanos->at(i)->getTipo() == "Estudiante") {
           cout << ciudadanos->at(i)->getNombre() << " | " << ciudadanos->at(i)->getFechaNacimiento() << " | " << ciudadanos->at(i)->getAltura() << " | " << ciudadanos->at(i)->getColorPelo() << " | " << ciudadanos->at(i)->getColorOjos() << endl;
         }
@@ -209,14 +209,140 @@ bool guardarArchivo(Lista*){
 
 }
 
-Ciudadano* anadirCiudadano(int tipo){
+Ciudadano* anadirCiudadano(int tipo, Lista* ciudadanos){
+  Ciudadano* ciudadano = NULL;
+  string nombre, fecha, colorPelo, colorOjos, likes, dislikes, tipoSangre;
+  float altura;
 
+  cout << "Ingrese los datos requeridos" << endl
+  << "Nombre: ";
+  cin >> nombre;
+
+  cout << "Fecha de Nacimiento: ";
+  cin >> fecha;
+
+  cout << "Altura (cm): ";
+  cin >> altura;
+
+  cout << "Color de Pelo: ";
+  cin >> colorPelo;
+
+  cout << "Color de Ojos: ";
+  cin >> colorOjos;
+
+  cout << "Likes: ";
+  cin >> likes;
+
+  cout << "Dislikes: ";
+  cin >> dislikes;
+
+  cout << "Tipo de Sangre: ";
+  cin >> tipoSangre;
+
+  switch (tipo) {
+    case 1:{
+      string homeroom, departamento, alias;
+      float sueldo;
+
+      cout << "Homeroom Classroom: ";
+      cin >> homeroom;
+
+      cout << "Departamento: ";
+      cin >> departamento;
+
+      cout << "Alias: ";
+      cin >> alias;
+
+      cout << "Sueldo: ";
+      cin >> sueldo;
+
+      ciudadano = new Maestro(nombre, fecha, altura, colorPelo, colorOjos, likes, dislikes, tipoSangre, homeroom, departamento, alias, sueldo);
+      break;
+    }
+    case 2:{
+      string homeroom;
+      float promedio;
+
+      cout << "Homeroom: ";
+      cin >> homeroom;
+
+      cout << "Promedio: ";
+      cin >> promedio;
+
+      string nombreMaestro;
+      imprimirCiudadanos(1, ciudadanos);
+
+      cout << endl << "Ingrese el nombre del maestro guía - ";
+      cin >> nombreMaestro;
+
+      if (existe(1, nombreMaestro, ciudadanos)) {
+
+      }else{
+        cout << "[ERROR] No se ha encontrado al maestro '" << nombreMaestro << "'" << endl;
+        return NULL;
+      }
+
+      ciudadano = new Maestro(nombre, fecha, altura, colorPelo, colorOjos, likes, dislikes, tipoSangre, promedio, homeroom, maestro);
+      break;
+    }
+  }
+
+  if (ciudadano != NULL) {
+    cout << endl << "¿Desea añadir un quirk? [Y/N] - ";
+
+  }
+
+  return NULL;
 }
 
-void eliminarCiudadano(int, string, Lista* ciudadanos){
+void eliminarCiudadano(int tipo, string nombre, Lista* ciudadanos){
+  string sTipo;
 
+  if (tipo == 1) {
+    sTipo = "Maestro";
+  }else{
+    sTipo = "Estudiante";
+  }
+
+  for (int i = 1; i < ciudadanos->size(); i++) {
+    if (ciudadanos->at(i)->getNombre() == nombre && ciudadanos->at(i)->getTipo() == sTipo) {
+      ciudadanos->eliminarNodo(i);
+    }
+  }
 }
 
-bool existe(int, string, Lista* ciudadanos){
+bool existe(int tipo, string nombre, Lista* ciudadanos){
+  string sTipo;
 
+  if (tipo == 1) {
+    sTipo = "Maestro";
+  }else{
+    sTipo = "Estudiante";
+  }
+
+  for (int i = 1; i < ciudadanos->size(); i++) {
+    if (ciudadanos->at(i)->getNombre() == nombre && ciudadanos->at(i)->getTipo() == sTipo) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+Ciudadano* recuperarCiudadano(int tipo, string nombre, Lista* ciudadanos){
+  string sTipo;
+
+  if (tipo == 1) {
+    sTipo = "Maestro";
+  }else{
+    sTipo = "Estudiante";
+  }
+
+  for (int i = 1; i < ciudadanos->size(); i++) {
+    if (ciudadanos->at(i)->getNombre() == nombre && ciudadanos->at(i)->getTipo() == sTipo) {
+      return ciudadanos->at(i);
+    }
+  }
+
+  return NULL;
 }
