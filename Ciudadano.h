@@ -16,7 +16,7 @@ protected:
   string tipoSangre;
   string tipo;
 
-  Quirk quirk;
+  Quirk* quirk;
 
 public:
   Ciudadano();
@@ -31,7 +31,7 @@ public:
   string getDislikes();
   string getTipoSangre();
   string getTipo();
-  Quirk getQuirk();
+  Quirk* getQuirk();
 
   void setNombre(string);
   void setFechaNacimiento(string);
@@ -42,5 +42,5 @@ public:
   void setDislikes(string);
   void setTipoSangre(string);
   void setTipo(string);
-  void setQuirk(Quirk);
+  void setQuirk(Quirk*);
 };

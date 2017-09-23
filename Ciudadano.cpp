@@ -58,7 +58,7 @@ string Ciudadano::getTipo(){
   return tipo;
 }
 
-Quirk Ciudadano::getQuirk(){
+Quirk* Ciudadano::getQuirk(){
   return quirk;
 }
 
@@ -98,6 +98,6 @@ void Ciudadano::setTipo(string nTipo){
   tipo = nTipo;
 }
 
-void Ciudadano::setQuirk(Quirk nQuirk){
+void Ciudadano::setQuirk(Quirk* nQuirk){
   quirk = nQuirk;
 }

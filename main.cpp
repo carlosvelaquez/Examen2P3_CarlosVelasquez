@@ -8,6 +8,7 @@
 #include "Mutant.h"
 #include <string>
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -130,7 +131,7 @@ int main(){
         break;
       }
       default:{
-        cout << "Opción inválida, por favor intente de nuevo.";
+        cout << "Opción inválida, por favor intente de nuevo." << endl;
         break;
       }
     }
@@ -200,7 +201,20 @@ void imprimirCiudadanos(int tipo, Lista* ciudadanos){
       break;
     }
     case 3:{
+      bool existen = false;
+      cout << "Lista de Estudiantes y sus Departamentos" << endl
+      << "Nombre | MaestroGuia | Departamento" << endl << endl;
 
+      for (int i = 1; i <= ciudadanos->size(); i++) {
+        if (ciudadanos->at(i)->getTipo() == "Estudiante") {
+          cout << ciudadanos->at(i)->getNombre() << " | " << ((Estudiante*) ciudadanos->at(i))->getMaestroGuia()->getNombre() << " | " << ((Estudiante*) ciudadanos->at(i))->getMaestroGuia()->getDepartamento() << endl;
+          existen = true;
+        }
+      }
+
+      if (!existen) {
+        cout << "No hay registros que mostrar." << endl;
+      }
       break;
     }
     default:{
@@ -234,6 +248,8 @@ void imprimirPromedios(int tipo, Lista* ciudadanos){
     }
   }
 
+  cout << "Cantidad de " << sTipo << ": " << contador << endl;
+
   if (contador == 0) {
     contador ++;
   }
@@ -241,13 +257,38 @@ void imprimirPromedios(int tipo, Lista* ciudadanos){
   float resultado = promedio/contador;
   sTipo += "s";
 
-  cout << "Cantidad de " << sTipo << ": " << contador << endl
-  << "Promedio calculado: " << resultado << endl;
+
+  cout << "Promedio calculado: " << resultado << endl;
 }
 
-bool guardarArchivo(Lista*){
-  cout << "Lista de Estudiantes" << endl;
-  cout << "Nombre | FechaNacimiento | Altura | ColorPelo | ColorOjos | Likes | Dislikes | TipoSangre | Quirk" << endl << endl;
+bool guardarArchivo(Lista* ciudadanos){
+  fstream archivo;
+  archivo.open("./ciudadanos.txt", fstream::out);
+
+  if (!archivo) {
+    return false;
+  }
+
+  archivo << "Lista de Ciudadanos" << endl;
+  archivo << "Nombre | FechaNacimiento | Altura | ColorPelo | ColorOjos | Likes | Dislikes | TipoSangre | Quirk" << endl << endl;
+
+  for (int i = 1; i <= ciudadanos->size(); i++) {
+    archivo << ciudadanos->at(i)->getNombre() << " | " << ciudadanos->at(i)->getFechaNacimiento() << " | "
+    << ciudadanos->at(i)->getAltura() << " | " << ciudadanos->at(i)->getColorPelo() << " | "
+    << ciudadanos->at(i)->getColorOjos() << " | " << ciudadanos->at(i)->getLikes() << " | "
+    << ciudadanos->at(i)->getDislikes() << " | " << ciudadanos->at(i)->getTipoSangre() << " | ";
+
+    if (ciudadanos->at(i)->getQuirk() != NULL) {
+      archivo << ciudadanos->at(i)->getQuirk()->getTipo();
+    }else{
+      archivo << "ninguno";
+    }
+
+    archivo << endl;
+  }
+
+  archivo.close();
+  return true;
 }
 
 Ciudadano* anadirCiudadano(int tipo, Lista* ciudadanos){
@@ -384,7 +425,7 @@ Ciudadano* anadirCiudadano(int tipo, Lista* ciudadanos){
       ciudadano = new Maestro(nombre, fecha, altura, colorPelo, colorOjos, likes, dislikes, tipoSangre, homeroom, departamento, alias, sueldo);
 
       if (quirk != NULL) {
-        ciudadano->setQuirk(*quirk);
+        ciudadano->setQuirk(quirk);
       }
 
       break;
@@ -418,20 +459,9 @@ Ciudadano* anadirCiudadano(int tipo, Lista* ciudadanos){
       ciudadano = new Estudiante(nombre, fecha, altura, colorPelo, colorOjos, likes, dislikes, tipoSangre, promedio, homeroom, maestro);
 
       if (quirk != NULL) {
-        ciudadano->setQuirk(*quirk);
+        ciudadano->setQuirk(quirk);
       }
 
-      break;
-    }
-    case 3:{
-      cout << "Lista de Estudiantes y sus Departamentos" << endl
-      << "Nombre | MaestroGuia | Departamento" << endl << endl;
-
-      for (int i = 1; i <= ciudadanos->size(); i++) {
-        if (ciudadanos->at(i)->getTipo() == "Estudiante") {
-          cout << ciudadanos->at(i)->getNombre() << " | " <<((Estudiante*) ciudadanos->at(i))->getMaestroGuia()->getDepartamento();
-        }
-      }
       break;
     }
   }

@@ -21,3 +21,6 @@ Quirk.o: Quirk.h Quirk.cpp
 
 Transformation.o: Transformation.h Transformation.cpp
 	g++ -c -g Transformation.cpp
+
+clean:
+	rm -rf *.o
