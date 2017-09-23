@@ -8,7 +8,7 @@ private:
   bool necesitaContacto;
 
 public:
-  Emmitter();
+  Emmitter(string, int, bool);
 
   string getEfecto();
   int getObjetosAfectados();

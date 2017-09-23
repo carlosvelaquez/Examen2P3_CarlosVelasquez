@@ -8,7 +8,7 @@ private:
   bool afectaOtros;
 
 public:
-  Transformation();
+  Transformation(string, int, bool);
 
   string getForma();
   int getImpactos();

@@ -9,7 +9,6 @@ Ciudadano::Ciudadano(){
   likes = "Placeholder";
   dislikes = "Placeholder";
   tipoSangre = "Placeholder";
-  tipo = "";
 }
 
 Ciudadano::Ciudadano(string nNombre, string nFecha, float nAltura, string nColorPelo, string nColorOjos, string nLikes, string nDislikes, string nTipoSangre){
@@ -59,6 +58,10 @@ string Ciudadano::getTipo(){
   return tipo;
 }
 
+Quirk Ciudadano::getQuirk(){
+  return quirk;
+}
+
 void Ciudadano::setNombre(string nNombre){
   nombre = nNombre;
 }
@@ -93,4 +96,8 @@ void Ciudadano::setTipoSangre(string nTipoSangre){
 
 void Ciudadano::setTipo(string nTipo){
   tipo = nTipo;
+}
+
+void Ciudadano::setQuirk(Quirk nQuirk){
+  quirk = nQuirk;
 }

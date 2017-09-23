@@ -1,7 +1,10 @@
 #include "Transformation.h"
 
-Transformation::Transformation(){
+Transformation::Transformation(string nForma, int nImpactos, bool nAfectaOtros){
   tipo = "Transformation";
+  forma = nForma;
+  impactos = nImpactos;
+  afectaOtros = nAfectaOtros;
 }
 
 string Transformation::getForma(){

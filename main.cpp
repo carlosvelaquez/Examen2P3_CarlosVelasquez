@@ -15,9 +15,10 @@ int menu();
 void imprimirCiudadanos(int, Lista*);
 void imprimirPromedios(int, Lista*);
 bool guardarArchivo(Lista*);
-Ciudadano* anadirCiudadano(int);
+Ciudadano* anadirCiudadano(int, Lista*);
 void eliminarCiudadano(int, string, Lista*);
 bool existe(int, string, Lista*);
+Ciudadano* recuperarCiudadano(int, string, Lista*);
 
 int main(){
   Lista ciudadanos;
@@ -26,7 +27,7 @@ int main(){
   while (!salir) {
     switch (menu()) {
       case 1:{
-        Maestro* nuevoMaestro = (Maestro*) anadirCiudadano(1);
+        Maestro* nuevoMaestro = (Maestro*) anadirCiudadano(1, &ciudadanos);
 
         if (nuevoMaestro != NULL) {
           cout << "Maestro añadido al sistema." << endl;
@@ -46,6 +47,7 @@ int main(){
         if (existe(1, nombreMaestro, &ciudadanos)) {
           string conf;
           cout << "Está seguro de que desea despedir a " << nombreMaestro << "? [Y/N] - ";
+          cin >> conf;
 
           if (conf == "Y" || conf == "y") {
             eliminarCiudadano(1, nombreMaestro, &ciudadanos);
@@ -53,11 +55,13 @@ int main(){
           }else{
             cout << "Operación abortada." << endl;
           }
+        }else{
+          cout << "Maestro no encontrado." << endl;
         }
         break;
       }
       case 3:{
-        Estudiante* nuevoEstudiante = (Estudiante*) anadirCiudadano(2);
+        Estudiante* nuevoEstudiante = (Estudiante*) anadirCiudadano(2, &ciudadanos);
 
         if (nuevoEstudiante != NULL) {
           cout << "Estudiante añadido al sistema." << endl;
@@ -77,13 +81,16 @@ int main(){
         if (existe(2, nombreEstudiante, &ciudadanos)) {
           string conf;
           cout << "Está seguro de que desea expulsar a " << nombreEstudiante << "? [Y/N] - ";
+          cin >> conf;
 
           if (conf == "Y" || conf == "y") {
-            eliminarCiudadano(1, nombreEstudiante, &ciudadanos);
+            eliminarCiudadano(2, nombreEstudiante, &ciudadanos);
             cout << "Estudiante expulsado exitosamente." << endl;
           }else{
             cout << "Operación abortada." << endl;
           }
+        }else{
+          cout << "Estudiante no encontrado." << endl;
         }
         break;
       }
@@ -163,9 +170,10 @@ void imprimirCiudadanos(int tipo, Lista* ciudadanos){
       cout << "Nombre | FechaNacimiento | Altura | ColorPelo | ColorOjos " << endl << endl;
       bool existen = false;
 
-      for (int i = 1; i < ciudadanos->size(); i++) {
+      for (int i = 1; i <= ciudadanos->size(); i++) {
         if (ciudadanos->at(i)->getTipo() == "Maestro") {
           cout << ciudadanos->at(i)->getNombre() << " | " << ciudadanos->at(i)->getFechaNacimiento() << " | " << ciudadanos->at(i)->getAltura() << " | " << ciudadanos->at(i)->getColorPelo() << " | " << ciudadanos->at(i)->getColorOjos() << endl;
+          existen = true;
         }
       }
 
@@ -179,9 +187,10 @@ void imprimirCiudadanos(int tipo, Lista* ciudadanos){
       cout << "Nombre | FechaNacimiento | Altura | ColorPelo | ColorOjos " << endl << endl;
       bool existen = false;
 
-      for (int i = 1; i < ciudadanos->size(); i++) {
+      for (int i = 1; i <= ciudadanos->size(); i++) {
         if (ciudadanos->at(i)->getTipo() == "Estudiante") {
           cout << ciudadanos->at(i)->getNombre() << " | " << ciudadanos->at(i)->getFechaNacimiento() << " | " << ciudadanos->at(i)->getAltura() << " | " << ciudadanos->at(i)->getColorPelo() << " | " << ciudadanos->at(i)->getColorOjos() << endl;
+          existen = true;
         }
       }
 
@@ -202,16 +211,48 @@ void imprimirCiudadanos(int tipo, Lista* ciudadanos){
 }
 
 void imprimirPromedios(int tipo, Lista* ciudadanos){
+  float promedio = 0;
+  float contador = 0;
+  string sTipo;
 
+  if (tipo == 1) {
+    sTipo = "Maestro";
+  }else{
+    sTipo = "Estudiante";
+  }
+
+  for (int i = 1; i <= ciudadanos->size(); i++) {
+    if (ciudadanos->at(i)->getTipo() == sTipo) {
+      if (tipo == 2) {
+        promedio += ((Estudiante*) ciudadanos->at(i))->getPromedio();
+        contador ++;
+      }else{
+        promedio += ((Maestro*) ciudadanos->at(i))->getSueldo();
+        contador ++;
+      }
+
+    }
+  }
+
+  if (contador == 0) {
+    contador ++;
+  }
+
+  float resultado = promedio/contador;
+  sTipo += "s";
+
+  cout << "Cantidad de " << sTipo << ": " << contador << endl
+  << "Promedio calculado: " << resultado << endl;
 }
 
 bool guardarArchivo(Lista*){
-
+  cout << "Lista de Estudiantes" << endl;
+  cout << "Nombre | FechaNacimiento | Altura | ColorPelo | ColorOjos | Likes | Dislikes | TipoSangre | Quirk" << endl << endl;
 }
 
 Ciudadano* anadirCiudadano(int tipo, Lista* ciudadanos){
   Ciudadano* ciudadano = NULL;
-  string nombre, fecha, colorPelo, colorOjos, likes, dislikes, tipoSangre;
+  string nombre, fecha, colorPelo, colorOjos, likes, dislikes, tipoSangre, conf;
   float altura;
 
   cout << "Ingrese los datos requeridos" << endl
@@ -239,6 +280,90 @@ Ciudadano* anadirCiudadano(int tipo, Lista* ciudadanos){
   cout << "Tipo de Sangre: ";
   cin >> tipoSangre;
 
+  cout << endl << "¿Desea añadir un quirk? [Y/N] - ";
+  cin >> conf;
+
+  Quirk* quirk = NULL;
+
+  if (conf == "Y" || conf == "y") {
+    int opQuirk;
+    bool salir = false;
+
+    while(!salir){
+      salir = true;
+      cout << "----------------------------------" << endl;
+      cout << "Lista de Quirks" << endl << endl
+      << "1. Emmitter" << endl
+      << "2. Transformation" << endl
+      << "3. Mutant" << endl << endl
+      << "Ingrese el número de la opción que desea - ";
+
+      cin >> opQuirk;
+      cout << "----------------------------------" << endl;
+
+      switch (opQuirk) {
+        case 1:{
+          cout << "Efecto de la Emisión: ";
+          string efecto;
+          cin >> efecto;
+
+          cout << "Cantidad de Objetos Afectados: ";
+          int objetosAfectados;
+          cin >> objetosAfectados;
+
+          cout << "¿Necesita Contacto Fisico? [Y/N]: ";
+          bool necesitaContacto;
+          string confBool;
+          cin >> confBool;
+
+          if (confBool == "y" && confBool == "Y") {
+            necesitaContacto = true;
+          }else{
+            necesitaContacto = false;
+          }
+
+          quirk = new Emmitter(efecto, objetosAfectados, necesitaContacto);
+          break;
+        }
+        case 2:{
+          cout << "Forma de Cambio: ";
+          string forma;
+          cin >> forma;
+
+          cout << "Cantidad de Impactos: ";
+          int impactos;
+          cin >> impactos;
+
+          cout << "¿Afecta a Otros? [Y/N]: ";
+          bool afectaOtros;
+          string confBool;
+          cin >> confBool;
+
+          if (confBool == "y" && confBool == "Y") {
+            afectaOtros = true;
+          }else{
+            afectaOtros = false;
+          }
+
+          quirk = new Transformation(forma, impactos, afectaOtros);
+          break;
+        }
+        case 3:{
+          cout << "Quirk Mutant seleccionado" << endl;
+          quirk = new Mutant();
+          break;
+        }
+        default:{
+          cout << "Opción inválida, por favor intente de nuevo." << endl;
+          salir = false;
+          break;
+        }
+      }
+    }
+  }
+
+  cout << "----------------------------------" << endl;
+
   switch (tipo) {
     case 1:{
       string homeroom, departamento, alias;
@@ -257,6 +382,11 @@ Ciudadano* anadirCiudadano(int tipo, Lista* ciudadanos){
       cin >> sueldo;
 
       ciudadano = new Maestro(nombre, fecha, altura, colorPelo, colorOjos, likes, dislikes, tipoSangre, homeroom, departamento, alias, sueldo);
+
+      if (quirk != NULL) {
+        ciudadano->setQuirk(*quirk);
+      }
+
       break;
     }
     case 2:{
@@ -270,29 +400,43 @@ Ciudadano* anadirCiudadano(int tipo, Lista* ciudadanos){
       cin >> promedio;
 
       string nombreMaestro;
+      cout << endl;
       imprimirCiudadanos(1, ciudadanos);
 
       cout << endl << "Ingrese el nombre del maestro guía - ";
       cin >> nombreMaestro;
 
-      if (existe(1, nombreMaestro, ciudadanos)) {
+      Maestro* maestro = NULL;
 
+      if (existe(1, nombreMaestro, ciudadanos)) {
+        maestro = (Maestro*) recuperarCiudadano(1, nombreMaestro, ciudadanos);
       }else{
         cout << "[ERROR] No se ha encontrado al maestro '" << nombreMaestro << "'" << endl;
         return NULL;
       }
 
-      ciudadano = new Maestro(nombre, fecha, altura, colorPelo, colorOjos, likes, dislikes, tipoSangre, promedio, homeroom, maestro);
+      ciudadano = new Estudiante(nombre, fecha, altura, colorPelo, colorOjos, likes, dislikes, tipoSangre, promedio, homeroom, maestro);
+
+      if (quirk != NULL) {
+        ciudadano->setQuirk(*quirk);
+      }
+
+      break;
+    }
+    case 3:{
+      cout << "Lista de Estudiantes y sus Departamentos" << endl
+      << "Nombre | MaestroGuia | Departamento" << endl << endl;
+
+      for (int i = 1; i <= ciudadanos->size(); i++) {
+        if (ciudadanos->at(i)->getTipo() == "Estudiante") {
+          cout << ciudadanos->at(i)->getNombre() << " | " <<((Estudiante*) ciudadanos->at(i))->getMaestroGuia()->getDepartamento();
+        }
+      }
       break;
     }
   }
 
-  if (ciudadano != NULL) {
-    cout << endl << "¿Desea añadir un quirk? [Y/N] - ";
-
-  }
-
-  return NULL;
+  return ciudadano;
 }
 
 void eliminarCiudadano(int tipo, string nombre, Lista* ciudadanos){
@@ -304,7 +448,7 @@ void eliminarCiudadano(int tipo, string nombre, Lista* ciudadanos){
     sTipo = "Estudiante";
   }
 
-  for (int i = 1; i < ciudadanos->size(); i++) {
+  for (int i = 1; i <= ciudadanos->size(); i++) {
     if (ciudadanos->at(i)->getNombre() == nombre && ciudadanos->at(i)->getTipo() == sTipo) {
       ciudadanos->eliminarNodo(i);
     }
@@ -320,7 +464,7 @@ bool existe(int tipo, string nombre, Lista* ciudadanos){
     sTipo = "Estudiante";
   }
 
-  for (int i = 1; i < ciudadanos->size(); i++) {
+  for (int i = 1; i <= ciudadanos->size(); i++) {
     if (ciudadanos->at(i)->getNombre() == nombre && ciudadanos->at(i)->getTipo() == sTipo) {
       return true;
     }
@@ -338,7 +482,7 @@ Ciudadano* recuperarCiudadano(int tipo, string nombre, Lista* ciudadanos){
     sTipo = "Estudiante";
   }
 
-  for (int i = 1; i < ciudadanos->size(); i++) {
+  for (int i = 1; i <= ciudadanos->size(); i++) {
     if (ciudadanos->at(i)->getNombre() == nombre && ciudadanos->at(i)->getTipo() == sTipo) {
       return ciudadanos->at(i);
     }

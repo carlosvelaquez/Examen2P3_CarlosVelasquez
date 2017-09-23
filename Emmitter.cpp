@@ -1,7 +1,10 @@
 #include "Emmitter.h"
 
-Emmitter::Emmitter(){
+Emmitter::Emmitter(string nEfecto, int nObjetosAfectados, bool nNecesitaContacto){
   tipo = "Emmitter";
+  efecto = nEfecto;
+  objetosAfectados = nObjetosAfectados;
+  necesitaContacto = nNecesitaContacto;
 }
 
 string Emmitter::getEfecto(){

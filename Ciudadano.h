@@ -31,6 +31,7 @@ public:
   string getDislikes();
   string getTipoSangre();
   string getTipo();
+  Quirk getQuirk();
 
   void setNombre(string);
   void setFechaNacimiento(string);
@@ -41,4 +42,5 @@ public:
   void setDislikes(string);
   void setTipoSangre(string);
   void setTipo(string);
+  void setQuirk(Quirk);
 };
